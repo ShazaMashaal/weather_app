@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/Position.dart';
+import 'package:weather_app/current_location_weather/controller/seach_by_city.dart';
 import 'package:weather_app/current_location_weather/model/weather.dart';
 
 import '../const.dart';
@@ -8,8 +9,9 @@ import 'controller/get_weather_data.dart';
 class CurrentLocationWeather extends StatefulWidget {
 
   final Pos position;
+  final String city;
 
-  const CurrentLocationWeather({ this.position});
+  const CurrentLocationWeather({ this.position, this.city});
 
 
   @override
@@ -17,6 +19,10 @@ class CurrentLocationWeather extends StatefulWidget {
 }
 
 class _CurrentLocationWeatherState extends State<CurrentLocationWeather> {
+
+
+TextEditingController searchController=TextEditingController();
+
   bool _isLoading = true;
   WeatherData data;
   @override
@@ -27,7 +33,11 @@ class _CurrentLocationWeatherState extends State<CurrentLocationWeather> {
     super.initState();
   }
    getData()async{
+    if(widget.city==null)
     data = await getWeatherData(widget.position.latitude, widget.position.longitude) ;
+    else if(widget.position==null)
+      data = await getWeatherDataBySearch(widget.city) ;
+
     setState(() {
       _isLoading = false;
     });
@@ -37,12 +47,29 @@ class _CurrentLocationWeatherState extends State<CurrentLocationWeather> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF3CC5EE),
-
-        actions:[ Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Icon(Icons.search,size: 30,color: Colors.white,),
-        )],
+        toolbarHeight: 60.0,
+        title: TextField(
+          controller: searchController,
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+              hintText: " Search...",
+              hintStyle: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                color: Colors.white,
+                onPressed: () async{
+                     data=await getWeatherDataBySearch(searchController.text.trim());
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                         builder: (context) => CurrentLocationWeather(city: data.name)));
+                },
+              )),
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        ),
       ),
+
       body:Container(
         width: double.infinity,
         decoration: BoxDecoration(
