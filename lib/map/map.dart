@@ -1,32 +1,49 @@
-import 'package:flutter/material.dart';
-import 'package:place_picker/place_picker.dart';
+import 'dart:async';
 
-class PickerDemo extends StatefulWidget {
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart';
+import 'package:weather_app/current_location_weather/controller/get_current_position.dart';
+
+
+
+class MapSample extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => PickerDemoState();
+  State<MapSample> createState() => MapSampleState();
 }
 
-class PickerDemoState extends State<PickerDemo> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Picker Example')),
-      body: Center(
-        child: FlatButton(
-          child: Text("Pick Delivery location"),
-          onPressed: () {
-            showPlacePicker();
-          },
-        ),
-      ),
-    );
+class MapSampleState extends State<MapSample> {
+
+
+  GoogleMapController _controller;
+Marker position;
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom:11.5,
+  );
+
+@override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
   }
 
-  void showPlacePicker() async {
-    LocationResult result = await Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PlacePicker("YOUR API KEY")));
 
-    // Handle the result in your way
-    print(result);
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: GoogleMap(
+        onMapCreated: (controller)=>_controller=controller,
+        markers: {position},
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        initialCameraPosition: _kGooglePlex,
+
+      ),
+
+    );
   }
 }

@@ -115,7 +115,7 @@ packages:
     source: hosted
     version: "2.0.6"
   google_maps_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
@@ -149,27 +149,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  location:
-    dependency: transitive
-    description:
-      name: location
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.3.0"
-  location_platform_interface:
-    dependency: transitive
-    description:
-      name: location_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.0"
-  location_web:
-    dependency: transitive
-    description:
-      name: location_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.1"
   matcher:
     dependency: transitive
     description:
@@ -198,13 +177,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.1"
-  place_picker:
-    dependency: "direct main"
-    description:
-      name: place_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.19-nullsafety"
   plugin_platform_interface:
     dependency: transitive
     description:

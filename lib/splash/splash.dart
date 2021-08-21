@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:weather_app/current_location_weather/controller/get_current_position.dart';
 import 'package:weather_app/current_location_weather/current_location_weather.dart';
 import 'package:weather_app/Position.dart';
 
@@ -21,7 +22,6 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  Geolocator geolocator = Geolocator();
 
   
 
@@ -30,7 +30,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _getLocation().then((position) {
+    getLocation().then((position) {
       return  position;
     }).then((value) => Navigator.pushReplacement(
         context,
@@ -49,13 +49,4 @@ class _SplashState extends State<Splash> {
   }
 }
 
-Future<Position> _getLocation() async {
-  var currentLocation;
-  try {
-    currentLocation = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-  } catch (e) {
-    currentLocation = null;
-  }
-  return currentLocation;
-}
+
