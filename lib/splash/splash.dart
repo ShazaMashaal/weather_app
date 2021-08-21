@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:splashscreen/splashscreen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/current_location_weather/current_location_weather.dart';
 import 'package:weather_app/Position.dart';
@@ -22,30 +21,22 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  String lat;
-  String long;
+  Geolocator geolocator = Geolocator();
 
-  getCurrentLocation() async {
-    var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    var latitude = position.latitude;
-    var longitude = position.longitude;
-    lat = "$latitude";
-    long = "$longitude";
-    Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  CurrentLocationWeather(position: Pos(lat, long))));
-    });
-  }
+  
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getCurrentLocation();
+    _getLocation().then((position) {
+      return  position;
+    }).then((value) => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                CurrentLocationWeather(position: value))));
   }
 
   @override
@@ -55,12 +46,16 @@ class _SplashState extends State<Splash> {
       child: Image.network(
           "https://aestheticwallpapers.org/wp-content/uploads/2020/08/clouds13-1.jpg"),
     ));
-
-    // return SplashScreen(
-    //   seconds: 5,
-    //   navigateAfterSeconds: CurrentLocationWeather(position:Pos(lat,long)),
-    //   imageBackground: NetworkImage(),
-
-    // );
   }
+}
+
+Future<Position> _getLocation() async {
+  var currentLocation;
+  try {
+    currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
+  } catch (e) {
+    currentLocation = null;
+  }
+  return currentLocation;
 }

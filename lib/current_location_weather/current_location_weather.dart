@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/Position.dart';
 import 'package:weather_app/current_location_weather/controller/seach_by_city.dart';
 import 'package:weather_app/current_location_weather/model/weather.dart';
@@ -8,8 +10,9 @@ import 'controller/get_weather_data.dart';
 
 class CurrentLocationWeather extends StatefulWidget {
 
-  final Pos position;
+  final Position position;
   final String city;
+
 
   const CurrentLocationWeather({ this.position, this.city});
 
@@ -34,7 +37,7 @@ TextEditingController searchController=TextEditingController();
   }
    getData()async{
     if(widget.city==null)
-    data = await getWeatherData(widget.position.latitude, widget.position.longitude) ;
+    data = await getWeatherData(widget.position.latitude.toString(), widget.position.longitude.toString()) ;
     else if(widget.position==null)
       data = await getWeatherDataBySearch(widget.city) ;
 
@@ -70,7 +73,7 @@ TextEditingController searchController=TextEditingController();
         ),
       ),
 
-      body:Container(
+      body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(

@@ -9,7 +9,6 @@ Future<WeatherData> getWeatherData(String lat, String long) async {
     Uri.parse(
         "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=9c15af06166e304ab03ac7075db2b74a"),
   );
-  print(response.body);
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
